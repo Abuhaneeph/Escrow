@@ -1,19 +1,25 @@
-// SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.13;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
 
-import {Script, console} from "forge-std/Script.sol";
-import {Counter} from "../src/Counter.sol";
+import "forge-std/Script.sol";  // Import Forge's Script utility
+import {Counter} from "../src/Counter.sol";  // Your contract to deploy
 
-contract CounterScript is Script {
-    Counter public counter;
-
-    function setUp() public {}
-
+contract CounterDeploy is Script {
     function run() public {
-        vm.startBroadcast();
+        // Access RPC URL and Deployer Private Key from environment variables
+        string memory rpcUrl = vm.envString("LISK_RPC_URL");  // Get RPC URL
+        address deployer = vm.envAddress("DEPLOYER_PRIVATE_KEY"); // Get Deployer's private key (address)
+        
+        // Start broadcasting with the deployer's private key
+        vm.startBroadcast(deployer);
 
-        counter = new Counter();
+        // Deploy the Counter contract
+        Counter counter = new Counter();
 
+        // Stop broadcasting after deployment
         vm.stopBroadcast();
+
+        // Log the address where the contract was deployed
+        console.log("Counter contract deployed to:", address(counter));
     }
 }
