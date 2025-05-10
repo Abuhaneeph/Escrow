@@ -1,66 +1,111 @@
-## Foundry
+# Escrow Smart Contract
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+A secure and simple escrow smart contract system built with Solidity and Foundry.
 
-Foundry consists of:
+## Features
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+- Create escrow transactions between buyers and sellers
+- Secure fund management with reentrancy protection
+- Arbitration system for dispute resolution
+- Fee collection mechanism with configurable fee rates
+- Comprehensive testing including unit tests and fuzz tests
 
-## Documentation
+## Project Structure
 
-https://book.getfoundry.sh/
-
-## Usage
-
-### Build
-
-```shell
-$ forge build
+```
+escrow-contract/
+├── src/
+│   └── Escrow.sol       # Main escrow contract implementation
+├── test/
+│   ├── Escrow.t.sol     # Unit tests
+│   └── EscrowFuzz.t.sol # Fuzz tests
+└── foundry.toml         # Foundry configuration
 ```
 
-### Test
+## Prerequisites
 
-```shell
-$ forge test
+- [Foundry](https://book.getfoundry.sh/getting-started/installation)
+- [Git](https://git-scm.com/downloads)
+
+## Installation
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/yourusername/escrow-contract.git
+cd escrow-contract
 ```
 
-### Format
+2. Install dependencies:
 
-```shell
-$ forge fmt
+```bash
+forge install OpenZeppelin/openzeppelin-contracts
 ```
 
-### Gas Snapshots
+## Testing
 
-```shell
-$ forge snapshot
+Run the tests:
+
+```bash
+# Run all tests
+forge test
+
+# Run with verbosity for more details
+forge test -vvv
+
+# Run a specific test
+forge test --match-test testConstructor -vvv
+
+# Run fuzz tests with more iterations
+forge test --match-contract EscrowFuzzTest --fuzz-runs 1000
 ```
 
-### Anvil
+## Contract Usage
 
-```shell
-$ anvil
+The contract provides the following main functions:
+
+1. **Create Transaction**: A buyer initiates an escrow transaction with a seller
+2. **Deposit Payment**: The buyer deposits funds into the escrow
+3. **Confirm Delivery**: Upon satisfaction, the buyer confirms delivery and releases funds
+4. **Dispute Resolution**: Either party can raise a dispute which an arbitrator can resolve
+
+### Example Flow
+
+```solidity
+// Create a transaction
+uint256 transactionId = escrow.createTransaction(sellerAddress);
+
+// Deposit payment
+escrow.depositPayment{value: 1 ether}(transactionId);
+
+// Confirm delivery and release funds
+escrow.confirmDelivery(transactionId);
+
+// Alternative: Raise a dispute
+escrow.initiateDispute(transactionId);
+
+// Arbitrator resolves dispute
+// true = funds to seller, false = refund to buyer
+escrow.resolveDispute(transactionId, true); 
 ```
 
-### Deploy
+## Security Features
 
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
+- Non-reentrant functions to prevent reentrancy attacks
+- Role-based access control for critical functions
+- State machine pattern to enforce correct transaction flow
+- Events emitted for all state changes for transparency
+
+## Deployment
+
+Deploy to a local Anvil node:
+
+```bash
+forge script script/DeployEscrow.s.sol --rpc-url http://localhost:8545 --private-key $PRIVATE_KEY --broadcast
 ```
 
-### Cast
+For deployment to testnets or mainnet, update RPC URL and private key accordingly.
 
-```shell
-$ cast <subcommand>
-```
+## License
 
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+This project is licensed under the MIT License.
