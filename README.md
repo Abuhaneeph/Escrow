@@ -50,14 +50,6 @@ Run the tests:
 # Run all tests
 forge test
 
-# Run with verbosity for more details
-forge test -vvv
-
-# Run a specific test
-forge test --match-test testConstructor -vvv
-
-# Run fuzz tests with more iterations
-forge test --match-contract EscrowFuzzTest --fuzz-runs 1000
 ```
 
 ## Contract Usage
@@ -101,7 +93,7 @@ escrow.resolveDispute(transactionId, true);
 Deploy to a local Anvil node:
 
 ```bash
-forge script script/DeployEscrow.s.sol --rpc-url http://localhost:8545 --private-key $PRIVATE_KEY --broadcast
+forge script script/Escrow.s.sol --rpc-url http://localhost:8545 --private-key $PRIVATE_KEY --broadcast
 ```
 
 For deployment to testnets or mainnet, update RPC URL and private key accordingly.
