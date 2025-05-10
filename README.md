@@ -18,7 +18,7 @@ escrow-contract/
 │   └── Escrow.sol       # Main escrow contract implementation
 ├── test/
 │   ├── Escrow.t.sol     # Unit tests
-│   └── EscrowFuzz.t.sol # Fuzz tests
+│   └── EscrowFuzzTest.sol # Fuzz tests
 └── foundry.toml         # Foundry configuration
 ```
 
