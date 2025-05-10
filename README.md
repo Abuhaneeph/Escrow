@@ -32,8 +32,8 @@ escrow-contract/
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/escrow-contract.git
-cd escrow-contract
+git clone https://github.com/Abuhaneeph/Escrow.git
+cd Escrow
 ```
 
 2. Install dependencies:
